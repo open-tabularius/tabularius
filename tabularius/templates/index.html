@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>thank you for visiting</h1>
+    {% for post in posts  %}
+        <div>
+            <p>{{ post.author.username }} posted: <b>{{ post.body }}</b></p>
+        </div>
+    {% endfor %}
+
+{% endblock %}
