@@ -1,6 +1,6 @@
-from app import app
+from tabularius import app
 from flask import render_template, flash, redirect, url_for
-from app.forms import LoginForm
+from tabularius.forms import LoginForm
 
 
 @app.route('/')
@@ -17,7 +17,7 @@ def index():
         'their students succeed.'
     }, {
         'author': {
-            'username': 'rza'
+            'username': 'Xenophon'
         },
         'body':
         'If you consider what are called the virtues in mankind,' +

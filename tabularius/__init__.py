@@ -8,8 +8,9 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
+# database setup
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # we place the import statement here to avoid circular imports.
-from app import routes, models
+from tabularius import routes, models
