@@ -1,8 +1,8 @@
-"""documents students tables
+"""user document student tables
 
-Revision ID: 495b3a1e2c79
-Revises: bfbd34372393
-Create Date: 2018-04-14 13:22:04.637588
+Revision ID: 75225001c09f
+Revises: 
+Create Date: 2018-04-14 16:26:17.296679
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '495b3a1e2c79'
-down_revision = 'bfbd34372393'
+revision = '75225001c09f'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -28,6 +28,15 @@ def upgrade():
     op.create_index(op.f('ix_student_local_id'), 'student', ['local_id'], unique=True)
     op.create_index(op.f('ix_student_ps_id'), 'student', ['ps_id'], unique=True)
     op.create_index(op.f('ix_student_ssn_id'), 'student', ['ssn_id'], unique=True)
+    op.create_table('user',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=64), nullable=True),
+    sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('password_hash', sa.String(length=128), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
+    op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
     op.create_table('document',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('upload_name', sa.String(length=64), nullable=True),
@@ -36,10 +45,11 @@ def upgrade():
     sa.Column('file', sa.LargeBinary(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('file_name')
     )
     op.create_index(op.f('ix_document_timestamp'), 'document', ['timestamp'], unique=False)
-    op.create_index(op.f('ix_document_upload_name'), 'document', ['upload_name'], unique=True)
+    op.create_index(op.f('ix_document_upload_name'), 'document', ['upload_name'], unique=False)
     # ### end Alembic commands ###
 
 
@@ -48,6 +58,9 @@ def downgrade():
     op.drop_index(op.f('ix_document_upload_name'), table_name='document')
     op.drop_index(op.f('ix_document_timestamp'), table_name='document')
     op.drop_table('document')
+    op.drop_index(op.f('ix_user_username'), table_name='user')
+    op.drop_index(op.f('ix_user_email'), table_name='user')
+    op.drop_table('user')
     op.drop_index(op.f('ix_student_ssn_id'), table_name='student')
     op.drop_index(op.f('ix_student_ps_id'), table_name='student')
     op.drop_index(op.f('ix_student_local_id'), table_name='student')
