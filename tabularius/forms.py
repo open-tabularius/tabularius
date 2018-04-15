@@ -1,10 +1,39 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from tabularius.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign in')
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    remember_me = BooleanField('remember Me')
+    submit = SubmitField('sign in')
+
+
+class RegistrationForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired(), Email()])
+    password = PasswordField('password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'verify password', validators=[DataRequired(),
+                                       EqualTo('password')])
+    submit = SubmitField('register')
+
+    # validator methods in form of validate_<thing> are automatically pulled in
+    # by wtforms and invoked them
+    def validate_username(self, username):
+        # should only ever be one user, ergo must check to prevent db error
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            # raise error to user
+            raise ValidationError(
+                'username already taken, please use a different username')
+
+    def validate_email(self, email):
+        # an email should only be used by a single user, ergo check
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            # raise error to user
+            raise ValidationError(
+                'email already taken, please use different email address')

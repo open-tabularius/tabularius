@@ -1,7 +1,7 @@
-from tabularius import app
+from tabularius import app, db
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
-from tabularius.forms import LoginForm
+from tabularius.forms import LoginForm, RegistrationForm
 from tabularius.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -60,6 +60,26 @@ def login():
         return redirect(next_page)
     # failed to validate, retry
     return render_template('login.html', title='Sign in', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    # if successful, add them into the system.
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+
+        # add new user to dbs
+        # TODO prevent registration abuse
+        db.session.add(user)
+        db.session.commit()
+        flash('you have succesfully registered for tabularius!')
+        return redirect(url_for('login'))
+    # retry registration
+    return render_template('register.html', title='register', form=form)
 
 
 @app.route('/logout')
