@@ -14,8 +14,8 @@
                     <p>school: {{ user.school }}</p>
                 {% endif %}
                 {% if user.about %}
-                    <p>about:</p>
-                    <p>{{ user.about }}</p>
+                    
+                    <p>about: {{ user.about }}</p>
                 {% endif %}
                 {% if user == current_user %}
                     <p><a href="{{ url_for('edit_profile') }}">edit your profile</a></p>

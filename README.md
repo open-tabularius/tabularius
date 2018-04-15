@@ -17,3 +17,9 @@ flask run
 Flask will give a port url to visit, most likely
 [http://127.0.0.1:5000](http://127.0.0.1:5000), where you will find the website
 running.
+
+To enable debugging, also do the following:
+
+```bash
+export FLASK_DEBUG=1
+```
