@@ -1,9 +1,10 @@
 from tabularius import app, db
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
-from tabularius.forms import LoginForm, RegistrationForm
+from tabularius.forms import LoginForm, RegistrationForm, EditProfileForm
 from tabularius.models import User
 from flask_login import current_user, login_user, logout_user, login_required
+from datetime import datetime
 
 
 @app.route('/')
@@ -91,6 +92,7 @@ def logout():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    # TODO: use flask-avatar instead of gravitar for avatar in models.py
     user = User.query.filter_by(username=username).first_or_404()
     posts = [{
         'author': user,
@@ -101,3 +103,36 @@ def user(username):
     }]
 
     return render_template('user.html', user=user, posts=posts)
+
+
+@app.before_request
+def before_request():
+    # work that needs to be done before a view executes can go here
+    pass
+
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        # get all form updates
+        current_user.username = form.username.data
+        current_user.role = form.role.data
+        current_user.school = form.school.data
+        current_user.about = form.about.data
+
+        # commit updates to user entry in dbs
+        db.session.commit()
+
+        flash('profile changes saved')
+        return redirect(url_for('edit_profile'))
+
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.role.data = current_user.role
+        form.school.data = current_user.school
+        form.about.data = current_user.about
+
+    return render_template(
+        'edit_profile.html', title='edit profile', form=form)

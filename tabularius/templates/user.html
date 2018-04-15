@@ -2,24 +2,44 @@
 
 {% block content %}
 
-    <h1>user: {{ user.username }}</h1>
+    <table>
+        <tr valign="top">
+            <td><img src="{{ user.avatar(120) }}" alt="avatar failed to load"/></td>
+            <td>
+                <h1>user: {{ user.username }}</h1>
+                {% if user.role %}
+                    <p>role: {{ user.role }}</p>
+                {% endif %}
+                {% if user.school %}
+                    <p>school: {{ user.school }}</p>
+                {% endif %}
+                {% if user.about %}
+                    <p>about:</p>
+                    <p>{{ user.about }}</p>
+                {% endif %}
+                {% if user == current_user %}
+                    <p><a href="{{ url_for('edit_profile') }}">edit your profile</a></p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
     <hr/>
+
     {% for post in posts %}
 
-        <p>
-            {{ post.author.username }} posted: <b>{{ post.body }}</b>
-        </p>
+        <table>
+            <tr valign="top">
+                <td><img alt="failed to load avatar" src="{{ post.author.avatar(16) }}"/></td>
+                <td>{{ post.author.username }} posted: <b>{{ post.body }}</b></td>
+            </tr>
+        </table>
 
     {% endfor %}
-    <p>tabularius posted:
-        <b>
-            I hope you will find your experience with tabularius both satisfactory and beneficial to your classroom's development.
-        </b>
-    </p>
-    <p>tabularius posted:
-        <b>
-            Hello! This is a demonstration post. You can make one just like it to share updates about your classroom.
-        </b>
+
+    <p>
+        Welcome to the profile page of {{ user.username }}! It is mostly empty
+        now, but be sure to check back often for any updates on {{ user.username }}'s
+        classes and students.
     </p>
 
 {% endblock %}

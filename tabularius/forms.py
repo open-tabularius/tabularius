@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
+                     TextAreaField)
+from wtforms.validators import (DataRequired, ValidationError, Email, EqualTo,
+                                Length)
 from tabularius.models import User
 
 
@@ -37,3 +39,11 @@ class RegistrationForm(FlaskForm):
             # raise error to user
             raise ValidationError(
                 'email already taken, please use different email address')
+
+
+class EditProfileForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    about = TextAreaField('about me', validators=[Length(min=0, max=300)])
+    school = StringField('school', validators=[Length(min=0, max=120)])
+    role = StringField('role', validators=[Length(min=0, max=60)])
+    submit = SubmitField('submit edits')
