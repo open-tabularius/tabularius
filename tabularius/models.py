@@ -1,7 +1,13 @@
-from tabularius import db
+from tabularius import db, login
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+
+
+# methods necessary for flask_login to work
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 class User(UserMixin, db.Model):
