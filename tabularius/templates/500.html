@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>an expected error has occurred</h1>
+    <p>The administrator has been notified, and we are sorry for the inconvenience.</p>
+    <img alt="wu-tang is for the children" src="static/images/wu-tang-404.gif"/>
+    <p><a href="{{ url_for('index') }}">return to home</a></p>
+
+{% endblock %}
