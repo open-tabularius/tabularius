@@ -15,6 +15,7 @@ migrate = Migrate(app, db)
 
 # handle logins
 login = LoginManager(app)
+login.login_view = 'login'
 
 # we place the import statement here to avoid circular imports.
 from tabularius import routes, models
