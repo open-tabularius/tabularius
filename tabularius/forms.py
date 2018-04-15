@@ -47,3 +47,14 @@ class EditProfileForm(FlaskForm):
     school = StringField('school', validators=[Length(min=0, max=120)])
     role = StringField('role', validators=[Length(min=0, max=60)])
     submit = SubmitField('submit edits')
+
+    def __init__(self, original_username, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.original_username = original_username
+
+    def validate_username(self, username):
+        if username.data != self.original_username:
+            user = User.query.filter_by(username=self.username.data).first()
+            if user is not None:
+                raise ValidationError(
+                    'name already taken, please use a ' + 'different username')
