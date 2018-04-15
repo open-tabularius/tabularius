@@ -2,7 +2,8 @@
 
 > noun. a keeper of archives, a registrar, a public notary, scrivener
 
-student intervention is a comprehensive framework for data entry and analysis for educators to detect students in need of RTI
+tabularius is a free and open platform for educators to help their students
+succeed.
 
 ## Running
 
@@ -12,3 +13,7 @@ student intervention is a comprehensive framework for data entry and analysis fo
 export FLASK_APP=tabularius.py
 flask run
 ```
+
+Flask will give a port url to visit, most likely
+[http://127.0.0.1:5000](http://127.0.0.1:5000), where you will find the website
+running.

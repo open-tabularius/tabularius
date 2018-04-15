@@ -16,7 +16,7 @@ def index():
             'username': 'elias julian marko garcia'
         },
         'body':
-        'tabularius is a comprehensive data framework for educators to help ' +
+        'tabularius is a comprehensive platform for educators to help ' +
         'their students succeed.'
     }, {
         'author': {
@@ -86,3 +86,9 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
