@@ -93,17 +93,11 @@ def logout():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [{
-        'author':
-        user,
-        'body':
-        'Hello! This is a demonstration post. ' +
-        'You can make one just like it to share updates about your classroom.'
+        'author': user,
+        'body': 'another post on tabularius!'
     }, {
-        'author':
-        user,
-        'body':
-        'I hope you will find your experience with tabularius both ' +
-        'satisfactory and beneficial to your classroom\'s development.'
+        'author': user,
+        'body': 'my first post on tabularius! hooray!'
     }]
 
     return render_template('user.html', user=user, posts=posts)
