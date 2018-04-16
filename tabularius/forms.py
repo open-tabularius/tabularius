@@ -13,6 +13,13 @@ class LoginForm(FlaskForm):
     submit = SubmitField('sign in')
 
 
+class PostForm(FlaskForm):
+    post = TextAreaField(
+        'Tell us what is happening in your classroom!',
+        validators=[DataRequired(), Length(min=1, max=300)])
+    submit = SubmitField('post it!')
+
+
 class RegistrationForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired(), Email()])

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block app_content %}
 
-    <table>
-        <tr valign="top">
-            <td><img src="{{ user.avatar(120) }}" alt="avatar failed to load"/></td>
+    <table class="table table-hover">
+        <tr>
+            <td width="256px"><img src="{{ user.avatar(256) }}" alt="avatar failed to load"/></td>
             <td>
                 <h1>user: {{ user.username }}</h1>
                 {% if user.role %}
@@ -14,27 +14,39 @@
                     <p>school: {{ user.school }}</p>
                 {% endif %}
                 {% if user.about %}
-                    
                     <p>about: {{ user.about }}</p>
                 {% endif %}
+                <p>
+                    {{ user.followers.count() }} followers, {{ user.followed.count() }} following.
+                </p>
                 {% if user == current_user %}
                     <p><a href="{{ url_for('edit_profile') }}">edit your profile</a></p>
+                {% elif not current_user.is_following(user) %}
+                    <p><a href="{{ url_for('follow', username=user.username) }}">Follow</a></p>
+                {% else %}
+                    <p><a href="{{ url_for('unfollow', username=user.username) }}">Unfollow</a></p>
                 {% endif %}
             </td>
         </tr>
     </table>
-    <hr/>
 
     {% for post in posts %}
-
-        <table>
-            <tr valign="top">
-                <td><img alt="failed to load avatar" src="{{ post.author.avatar(16) }}"/></td>
-                <td>{{ post.author.username }} posted: <b>{{ post.body }}</b></td>
-            </tr>
-        </table>
-
+        {% include '_post.html' %}
     {% endfor %}
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Newer posts
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Older posts <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     <p>
         Welcome to the profile page of {{ user.username }}! It is mostly empty
