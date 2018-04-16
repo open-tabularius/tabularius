@@ -24,22 +24,6 @@ def index():
     # mock posts
     posts = current_user.followed_posts().all()
 
-    # posts = [{
-    #     'author': {
-    #         'username': 'elias julian marko garcia'
-    #     },
-    #     'body':
-    #     'tabularius is a comprehensive platform for educators to help ' +
-    #     'their students succeed.'
-    # }, {
-    #     'author': {
-    #         'username': 'xenophon'
-    #     },
-    #     'body':
-    #     'if you consider what are called the virtues in mankind,' +
-    #     ' you will find their growth is assisted by education and cultivation.'
-    # }]
-
     return render_template('index.html', title='home', form=form, posts=posts)
 
 
@@ -220,3 +204,8 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+
+@app.route('/demo_graph')
+def demo_graph():
+    return render_template('demo_graph.html', title='demo graph')
