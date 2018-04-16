@@ -5,7 +5,9 @@
 tabularius is a free and open platform for educators to help their students
 succeed.
 
-## Running
+Visit the [website](https://www.tabularius.org)
+
+## Running locally
 
 `cd` into the cloned repository and enter the following into your terminal:
 
