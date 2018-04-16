@@ -57,6 +57,3 @@ class Student(db.Model):
 
     def __repr__(self):
         return '<Student {}>'.format(self.ssn_id)
-
-
-# class Attendance(db.

@@ -6,6 +6,7 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+from flask_mail import Mail
 
 # application is created as an instance of Flask and we pass it __name__
 # in order load resources correctly for our module
@@ -23,6 +24,9 @@ login.login_view = 'login'
 # TODO: use flask-avatars to remove dependency on gravatar
 # handle avatars
 # avatar = Avatar(app)
+
+# AOL VOICE: YOU’VE GOT MAIL
+mail = Mail(app)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:

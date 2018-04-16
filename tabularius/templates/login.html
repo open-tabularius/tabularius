@@ -18,8 +18,20 @@
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
+        <p>
+            {{ form.remember_me() }} {{ form.remember_me.label }}
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
     </form>
-    <p>new to tabularius? <a href="{{ url_for('register') }}">click to create an account.</a></p>
+    <p>
+        new to tabularius?
+        <a href="{{ url_for('register') }}">click here to create an account.</a>
+    </p>
+    <p>
+        forgot your password?
+        <a href="{{ url_for('reset_password_request') }}">click here to reset it.</a>
+     
+    </p>
 {% endblock %}

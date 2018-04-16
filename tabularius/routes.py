@@ -1,8 +1,10 @@
 from tabularius import app, db
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
-from tabularius.forms import LoginForm, RegistrationForm, EditProfileForm
+from tabularius.forms import (LoginForm, RegistrationForm, EditProfileForm,
+                              ResetPassswordRequestForm)
 from tabularius.models import User
+from tabularius.email import send_pw_reset_email
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
 
@@ -136,3 +138,19 @@ def edit_profile():
 
     return render_template(
         'edit_profile.html', title='edit profile', form=form)
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPassswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_pw_reset_email(user)
+        flash('check your email for a password reset link')
+        return redirect(url_for('login'))
+
+    return render_template(
+        'reset_password_request.html', title='reset password', form=form)
