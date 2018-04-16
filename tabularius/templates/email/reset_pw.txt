@@ -1,0 +1,11 @@
+Hello there, {{ user.username }},
+
+Our system registered a password reset request. If that was not you, please ignore this email.
+
+To reset your password, click on the following link:
+
+{{ url_for("reset_password", token=token, _external=True) }}
+
+best,
+
+- tabularius dev
