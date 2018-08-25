@@ -2,4 +2,4 @@ import os
 
 
 class Config():
-    SECRET = os.environ.get('SECRET') or "wu tang clan comin' at ya"
+    SECRET_KEY = os.environ.get('SECRET_KEY') or "wu tang clan comin' at ya"
