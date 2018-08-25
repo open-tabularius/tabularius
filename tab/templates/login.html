@@ -8,10 +8,17 @@
         <p>
             {{ form.username.label }} <br>
             {{ form.username(size=32) }}
+            <!-- catch bad user input for notification -->
+            {% for error in form.username.errors %}
+                <span styles='color: red;'>[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.password.label }} <br>
             {{ form.password(size=32) }}
+            {% for error in form.password.errors %}
+                <span styles='color: red;'>[{{ error }}]</span>
+            {% endfor %}            
         </p>
         <p>
             {{ form.remember_me() }} {{ form.remember_me.label }}
