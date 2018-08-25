@@ -1,0 +1,14 @@
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }} -- tabularius</title>
+        {% else %}
+            <title>welcome to tabularius</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>tabularius: <a href="/index">home</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
