@@ -8,8 +8,8 @@
     </head>
     <body>
         <div>tabularius:
-            <a href="/index">home</a>
-            <a href="/login">login</a>
+            <a href="{{ url_for('index') }}">home</a>
+            <a href="{{ url_for('login') }}">login</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
