@@ -1,7 +1,10 @@
 import os
 
 basedir = os.path.abspath(os.path.dirname(__name__))
-DATABASE_URI = "postgresql://spook:tab_dev@haunt/tab_dev"
+
+# development URI
+# _ALWAYS_ keep your actual credentials safe in env variables
+DATABASE_URI = "postgresql://spook:tab_dev@localhost/tab_dev"
 
 
 class Config():
