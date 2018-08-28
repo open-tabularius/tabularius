@@ -10,8 +10,7 @@ from werkzeug.urls import url_parse
 @tab_app.route('/index')
 @login_required
 def index():
-    user = {'username': 'spook'}
-    return render_template('index.html', title='home', user=user)
+    return render_template('index.html', title='home')
 
 
 @tab_app.route('/login', methods=['GET', 'POST'])
@@ -40,7 +39,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
 
-        return redirect(url_for(next_page))
+        return redirect(next_page)
 
     # default case for not logged in user accessing login page
     return render_template('login.html', title='sign in', form=form)

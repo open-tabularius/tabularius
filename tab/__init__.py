@@ -11,8 +11,9 @@ tab_app.config.from_object(Config)
 db = SQLAlchemy(tab_app)
 migrate = Migrate(tab_app, db)
 
-# password management
+# user login management
 login = LoginManager(tab_app)
+login.login_view = 'login'
 
 # avoids circular dependencies because python is special like that
 from tab import routes, models
