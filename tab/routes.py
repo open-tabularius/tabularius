@@ -62,6 +62,12 @@ def register():
     return render_template('register.html', title='register', form=form)
 
 
+@tab_app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user)
+
+
 @tab_app.route('/logout')
 def logout():
     logout_user()
