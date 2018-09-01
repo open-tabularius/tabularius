@@ -16,4 +16,4 @@ login = LoginManager(tab_app)
 login.login_view = 'login'
 
 # avoids circular dependencies because python is special like that
-from tab import routes, models
+from tab import routes, models, errors
