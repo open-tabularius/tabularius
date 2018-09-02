@@ -3,6 +3,7 @@ from tab.models import User
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import (DataRequired, Email, EqualTo, ValidationError,
                                 Length)
+from flask_login import current_user
 
 
 class LoginForm(FlaskForm):
@@ -37,9 +38,9 @@ class RegistrationForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
 
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('', validators=[])
+    username = StringField('Username', validators=[])
+    email = StringField('Email', validators=[Email()])
+    password = PasswordField('Password', validators=[])
     password_validate = PasswordField(
         'Re-enter Password', validators=[EqualTo('password')])
 
@@ -47,11 +48,12 @@ class ProfileForm(FlaskForm):
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
-        if user is not None:
+
+        if user is not None and current_user.username != user.username:
             raise ValidationError('username already taken, try another.')
 
     def validate_email(self, email):
-        email = User.query.filter_by(email=email.data).first()
-        if email is not None:
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None and current_user.email != user.email:
             raise ValidationError(
                 "email address already taken, please use a different email")
