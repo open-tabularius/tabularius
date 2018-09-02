@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from tab.models import User
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms.validators import (DataRequired, Email, EqualTo, ValidationError,
+                                Length)
 
 
 class LoginForm(FlaskForm):
@@ -21,6 +22,28 @@ class RegistrationForm(FlaskForm):
         'Re-enter Password', validators=[DataRequired(),
                                          EqualTo('password')])
     submit = SubmitField('Sign in')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError('username already taken, try another.')
+
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        if email is not None:
+            raise ValidationError(
+                "email address already taken, please use a different email")
+
+
+class ProfileForm(FlaskForm):
+
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('', validators=[])
+    password_validate = PasswordField(
+        'Re-enter Password', validators=[EqualTo('password')])
+
+    submit = SubmitField('update profile')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()

@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from tab import tab_app, db
-from tab.forms import LoginForm, RegistrationForm
+from tab.forms import LoginForm, RegistrationForm, ProfileForm
 from tab.models import User
 from werkzeug.urls import url_parse
 
@@ -66,6 +66,42 @@ def register():
 @login_required
 def profile():
     return render_template('profile.html', user=current_user)
+
+
+@tab_app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = ProfileForm()
+    if form.validate_on_submit():
+        #     user = User.query.filter_by(username=form.username.data).first()
+        #     if user is not None:
+        #         flash('username already taken, try another')
+        #         return redirect(url_for('edit_profile'))
+        current_user.username = form.username.data
+        db.session.commit()
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        print(current_user.email)
+        form.email.data = current_user.email
+        #     return render_template(
+        #         'edit_profile.html', form=form, user=current_user)
+    return render_template(
+        'edit_profile.html', form=form, current_user=current_user)
+
+    # print("oh no")
+    # return render_template(
+    #     'edit_profile.html', form=form, current_user=current_user)
+
+    # # old shit
+    # # --------------------
+    # form = ProfileForm(current_user)
+    # if form.validate_on_submit():
+    #     pass
+    # print("oh no")
+    # return render_template(
+    #     'edit_profile.html', form=form, current_user=current_user)
+    # user = User.query.filter_by(username=form.username.data).first()
+    # email = User.query.filter_by(email=form.email.data).first()
 
 
 @tab_app.route('/logout')
