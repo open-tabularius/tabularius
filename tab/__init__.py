@@ -18,11 +18,11 @@ login.login_view = 'login'
 
 # error management with sentry
 
-sentry = Sentry(
-    tab_app,
-    dsn=
-    'https://032da9b870984f59bff6e791acedb389:d885a2b4902e430e984da71df055145b@sentry.io/1272916'
-)
+# sentry = Sentry(
+#     tab_app,
+#     dsn=
+#     'https://032da9b870984f59bff6e791acedb389:d885a2b4902e430e984da71df055145b@sentry.io/1272916'
+# )
 
 # avoids circular dependencies because python is special like that
 from tab import routes, models, errors
